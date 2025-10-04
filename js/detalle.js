@@ -23,6 +23,4 @@
  `
 }
 
-detalle(5)
-detalle(77)
-detalle(364)
+

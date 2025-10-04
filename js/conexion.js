@@ -1,4 +1,36 @@
-function conexion()
+let pokemones =[]
+
+async function conexion(filtrotipo)
 {
-    document.getElementById("root").innerHTML="conexion"
+       if(filtrotipo == "All"){
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1024`);
+    const data = await res.json();
+    return data.results;
+  }else{
+    const res = await fetch(`https://pokeapi.co/api/v2/type/${filtrotipo}`);
+    const data = await res.json();
+
+    const pokemonesTipo = [];
+    for (let i = 0; i < data.pokemon.length; i++) {
+      pokemonesTipo.push(data.pokemon[i].pokemon);
+    }
+    return pokemonesTipo;
+  }
+
 }
+
+async function General() {
+  if (pokemones.length === 0) {
+    pokemones = await conexion("All");
+  }
+  home();
+}
+
+async function FiltroConexion(Elfiltro){
+  document.getElementById("la-lista").innerHTML = "";
+  pokemones = await conexion(Elfiltro);
+  const listaHTML = generarLista(pokemones);
+  document.getElementById("la-lista").innerHTML = listaHTML;
+}
+
+General()
